@@ -1,5 +1,7 @@
 @extends('master')
 
+@section('title', "Подтверждение пароля")
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -22,7 +24,9 @@
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                 Примечание: обычно вы можете сгруппировать все маршруты, требующие аутентификации, вместе с authпромежуточным ПО. Для этой демонстрации мы создаем один маршрут контроллера в Settingsпространстве имен.
+
+   </span>
                                 @enderror
                             </div>
                         </div>

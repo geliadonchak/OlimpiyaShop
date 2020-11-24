@@ -41,7 +41,11 @@
                 <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Поиск</button>
             </form>
             <li class="nav-item">
-                <a class="btn btn-outline-success ml-2" href="#">Войти</a>
+                @if(\Illuminate\Support\Facades\Auth::check())
+                    <a class="btn btn-outline-success ml-2" href="{{ route('logout') }}">Выйти</a>
+                @else
+                    <a class="btn btn-outline-success ml-2" href="{{ route('login') }}">Войти</a>
+                @endif
             </li>
         </ul>
     </div>

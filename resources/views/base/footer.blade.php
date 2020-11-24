@@ -6,13 +6,13 @@
                     <h6 class="mb-0">Следите за нами в социальных сетях!</h6>
                 </div>
                 <div class="col-md-6 col-lg-7 text-center">
-                    <a class="fb-ic">
+                    <a class="fb-ic" href="https://vk.com/angelina99/">
                         <i class="fa fa-facebook-f text-body mr-4"> </i>
                     </a>
-                    <a class="tw-ic">
+                    <a class="tw-ic" href="https://t.me/geliadonchak">
                         <i class="fa fa-twitter text-body mr-4"> </i>
                     </a>
-                    <a class="ins-ic">
+                    <a class="ins-ic" href="https://www.instagram.com/gelia_donchak/">
                         <i class="fa fa-instagram text-body mr-4"> </i>
                     </a>
                 </div>
@@ -30,10 +30,10 @@
                 <h6 class="text-uppercase font-weight-bold">Каталог</h6>
                 <hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                 <p>
-                    <a class="dark-grey-text" href="#!">Тренажеры и фитнес</a>
+                    <a class="dark-grey-text" href="/catalog/22">Тренажеры и фитнес</a>
                 </p>
                 <p>
-                    <a class="dark-grey-text" href="#!">Туризм и активный отдых</a>
+                    <a class="dark-grey-text" href="/catalog/57">Туризм и активный отдых</a>
                 </p>
             </div>
             <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
