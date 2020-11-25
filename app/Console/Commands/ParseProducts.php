@@ -31,16 +31,35 @@ class ParseProducts extends Command
     private const PRODUCTS_COUNT = 200;
     private const REGEXP_CATEGORIES = '/<li class="b-catalog-category__item">[^<]*<a[^>]*href="(?<url>[^"]*)"[^>]*title="(?<title>[^"]*)"/su';
     private const REGEXP_LAST_PAGE = '/<a class="b-pagination__pagelink"[^>]*>(?<pagesCount>[^<]*)<\/a>[^<]*<\/li>[^<]*<li[^>]*>[^<]*<[^>]*b-pagination__next"/';
-    private const REGEXP_PRODUCT = '/b-product__item.*?b-product__item--image[^>]*src="(?<image>[^"]*)".*?b-product__item-text[^>]*>(?<name>[^<]*).*?b-product__item--price.*?data-price="(?<price>[^"]*)"/su';
+    private const REGEXP_PRODUCT = '/b-product__item.*?<a[^>]*href="(?<url>[^"]*)".*?b-product__item--image[^>]*src="(?<image>[^"]*)".*?b-product__item-text[^>]*>(?<name>[^<]*).*?b-product__item--price.*?data-price="(?<price>[^"]*)"/su';
+    private const REGEXP_PRODUCT_PAGE = '/b-tab-description">(?<description>.*?)<\/div.*?b-tab-features(?<attributesContainer>.*?)<\/tbody/su';
+    private const REGEXP_ATTRS = '/b-table__row.*?b-table__item[^>]*>(?<name>.*?)<\/.*?b-table__item[^>]*>(?<value>.*?)<\//su';
 
+    /**
+     * @throws \Exception
+     */
     private function parseProducts($categoryId, $page)
     {
         preg_match_all(self::REGEXP_PRODUCT, $page, $matched, PREG_SET_ORDER);
         foreach ($matched as $match) {
             $imageUrl = str_contains(self::SITE_URL, $match['image']) ? $match['image'] : self::SITE_URL . $match['image'];
             $image = file_get_contents($imageUrl);
+            $description = '';
+
             Storage::put('public' . $match['image'], $image);
-            Product::saveProduct(htmlspecialchars_decode($match['name']), '', $match['price'], $match['image'], $categoryId);
+
+            $productPage = Http::get($match['url']);
+            if (preg_match(self::REGEXP_PRODUCT_PAGE, $productPage->body(), $productMatch)) {
+                $description = htmlspecialchars_decode(trim(strip_tags(
+                    preg_replace('/<br>|<br\s?\/>/su', "\n", $productMatch['description'])
+                )));
+
+                if (preg_match_all(self::REGEXP_ATTRS, $productMatch['attributesContainer'], $attrsMatch, PREG_SET_ORDER)) {
+                    // todo парсить аттрибуты
+                }
+            }
+
+            Product::saveProduct(htmlspecialchars_decode($match['name']), $description, $match['price'], $match['image'], $categoryId, random_int(1, 5));
         }
         $this->totalCount += count($matched);
         echo date('H:i:s') . " Parsing " . count($matched) . " products\n";

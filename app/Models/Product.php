@@ -30,7 +30,7 @@ class Product extends Model
         return $products->join('categories', 'category_id', '=', 'categories.id')->get(['categories.name as category_name', 'products.*']);
     }
 
-    public static function saveProduct($name, $description, $price, $image, $category_id)
+    public static function saveProduct($name, $description, $price, $image, $category_id, $rating)
     {
         $product = new Product();
         $product->name = $name;
@@ -38,6 +38,7 @@ class Product extends Model
         $product->price = $price;
         $product->image = $image;
         $product->category_id = $category_id;
+        $product->rating = $rating;
         $product->save();
         return $product->getKey();
     }

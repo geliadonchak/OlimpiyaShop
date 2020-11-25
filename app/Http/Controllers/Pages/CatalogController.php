@@ -27,7 +27,7 @@ class CatalogController extends BasePageController
         $breadcrumbs = array_reverse($breadcrumbs);
 
         return $this->viewResponse('pages.catalog', [
-            'currentCategory' => $this->categoryManager->getById($categoryId),
+            'currentCategory' => $category,
             'breadcrumb' => $breadcrumbs
         ]);
     }

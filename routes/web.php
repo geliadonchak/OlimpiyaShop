@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Pages\CatalogController;
 use App\Http\Controllers\Pages\IndexController;
+use App\Http\Controllers\Pages\ProductController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,8 @@ Route::get('/catalog/{categoryId}', [CatalogController::class, 'catalog'])->name
 Route::get('/home', [IndexController::class, 'index'])->name('home');
 
 Route::get('/logout', [IndexController::class, 'logout'])->name('logout');
+
+Route::get('/product/{productId}', [ProductController::class, 'product'])->name('product');
 
 //Auth::routes();
 Auth::routes(['verify' => true]);
