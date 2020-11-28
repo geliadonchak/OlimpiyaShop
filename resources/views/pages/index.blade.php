@@ -38,20 +38,29 @@
 
             <div class="row justify-content-center">
                 @foreach($products as $key => $product)
-                    <div class="card mb-3 mt-3 mr-3 ml-3 justify-content-center" style="width: 18rem;">
-                        <img class="container-fluid mt-3 card-img-top" src="{{ "storage" . $product->image }}" style="height: 180px" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title" style="min-height: 5rem">{{ $product->name }}</h5>
-                            <div class="h4 text-right">
-                                <strong>{{ $product->price }}</strong>
-                                <small><strong>₽</strong></small>
+                    <form method="post" action="{{ route('add-product-to-basket') }}">
+                        <div class="card mb-3 mt-3 mr-3 ml-3 justify-content-center" style="width: 18rem;">
+                            <img class="container-fluid mt-3 card-img-top"
+                                 src="{{ "/storage" . $product->image }}" style="height: 180px"
+                                 alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" style="min-height: 5rem">{{ $product->name }}</h5>
+                                <div class="h4 text-right">
+                                    <strong>{{ number_format($product->price, 0, ',', ' ') }}</strong>
+                                    <small><strong>₽</strong></small>
+                                </div>
+                                <div class="row">
+                                    <input @if(!\Illuminate\Support\Facades\Auth::check()) disabled @endif type="submit" class="btn btn-success mr-1 ml-1 mb-0" value="В корзину"/>
+                                    <a href="/product/{{ $product->id }}"
+                                       class="btn btn-secondary mr-1 ml-1 mb-0">Перейти к товару</a>
+                                </div>
                             </div>
-                            <div class="row">
-                                <a href="#" class="btn btn-success mr-1 ml-1 mb-0">В корзину</a>
-                                <a href="#" class="btn btn-secondary mr-1 ml-1 mb-0">Перейти к товару</a>
-                            </div>
+
+                            @csrf
+                            <input type="hidden" name="productId" value="{{$product->id}}" />
+                            <input type="hidden" name="count" value="1" />
                         </div>
-                    </div>
+                    </form>
                 @endforeach
             </div>
         </div>

@@ -1,4 +1,4 @@
-<nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light">
+<nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light @if(!isset($breadcrumb)) mb-3 @endif">
     <a class="navbar-brand" href="{{ route('home') }}">Olimpiya </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,11 +28,14 @@
                     </li>
                 @endforeach
             @endif
-            <li class="nav-item">
-                <a class="nav-link" href="#">Корзина
-                    <span class="badge badge-success badge-pill">0</span>
-                </a>
-            </li>
+
+            @if(\Illuminate\Support\Facades\Auth::check())
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('basket') }}">Корзина
+                        <span class="badge badge-success badge-pill">{{ $basketCount }}</span>
+                    </a>
+                </li>
+            @endif
         </ul>
 
         <ul class="navbar-nav mr-0">

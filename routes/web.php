@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Pages\BasketController;
 use App\Http\Controllers\Pages\CatalogController;
 use App\Http\Controllers\Pages\IndexController;
 use App\Http\Controllers\Pages\ProductController;
@@ -29,19 +30,28 @@ Route::get('/logout', [IndexController::class, 'logout'])->name('logout');
 
 Route::get('/product/{productId}', [ProductController::class, 'product'])->name('product');
 
-//Auth::routes();
-Auth::routes(['verify' => true]);
+Route::get('/basket', [BasketController::class, 'basket'])->name('basket');
 
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware(['auth'])->name('verification.notice');
+Route::post('/basket/add-product', [BasketController::class, 'addProductToBasket'])->name('add-product-to-basket');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/basket/remove-product', [BasketController::class, 'removeProductFromBasket'])->name('remove-product-from-basket');
 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('status', 'verification-link-sent');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::post('/basket/remove-all-products', [BasketController::class, 'removeAllProductsFromBasket'])->name('remove-all-products-from-basket');
+
+Auth::routes();
+
+//Auth::routes(['verify' => true]);
+//
+//Route::get('/email/verify', function () {
+//    return view('auth.verify-email');
+//})->middleware(['auth'])->name('verification.notice');
+//
+//Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//    $request->fulfill();
+//    return redirect('/home');
+//})->middleware(['auth', 'signed'])->name('verification.verify');
+//
+//Route::post('/email/verification-notification', function (Request $request) {
+//    $request->user()->sendEmailVerificationNotification();
+//    return back()->with('status', 'verification-link-sent');
+//})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

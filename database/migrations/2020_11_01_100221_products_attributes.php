@@ -16,7 +16,7 @@ class ProductsAttributes extends Migration
         Schema::create('products_attributes', function (Blueprint $table) {
             $table->timestamps();
             $table->bigIncrements('id');
-            $table->string('type', 128);
+            $table->string('name', 128);
             $table->string('value');
             $table->foreignId('product_id')->references('id')->on('products');
         });

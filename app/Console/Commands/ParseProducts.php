@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductsAttribute;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -41,6 +42,7 @@ class ParseProducts extends Command
     private function parseProducts($categoryId, $page)
     {
         preg_match_all(self::REGEXP_PRODUCT, $page, $matched, PREG_SET_ORDER);
+
         foreach ($matched as $match) {
             $imageUrl = str_contains(self::SITE_URL, $match['image']) ? $match['image'] : self::SITE_URL . $match['image'];
             $image = file_get_contents($imageUrl);
@@ -48,19 +50,24 @@ class ParseProducts extends Command
 
             Storage::put('public' . $match['image'], $image);
 
-            $productPage = Http::get($match['url']);
-            if (preg_match(self::REGEXP_PRODUCT_PAGE, $productPage->body(), $productMatch)) {
-                $description = htmlspecialchars_decode(trim(strip_tags(
-                    preg_replace('/<br>|<br\s?\/>/su', "\n", $productMatch['description'])
-                )));
-
-                if (preg_match_all(self::REGEXP_ATTRS, $productMatch['attributesContainer'], $attrsMatch, PREG_SET_ORDER)) {
-                    // todo парсить аттрибуты
-                }
+            $productPage = Http::get(self::SITE_URL . $match['url'])->body();
+            if (preg_match(self::REGEXP_PRODUCT_PAGE, $productPage, $productMatch)) {
+                $description = $this->clearStr($productMatch['description']);
             }
 
-            Product::saveProduct(htmlspecialchars_decode($match['name']), $description, $match['price'], $match['image'], $categoryId, random_int(1, 5));
+            $product = Product::saveProduct(htmlspecialchars_decode($match['name']), $description, $match['price'], $match['image'], $categoryId, random_int(1, 5));
+
+            if (!empty($productMatch['attributesContainer'])) {
+                if (preg_match_all(self::REGEXP_ATTRS, $productMatch['attributesContainer'], $attrsMatches, PREG_SET_ORDER)) {
+                    foreach ($attrsMatches as $attrMatch) {
+                        $attrMatch['type'] = $this->clearStr($attrMatch['name']);
+                        $attrMatch['value'] = $this->clearStr($attrMatch['value']);
+                        ProductsAttribute::saveProductAttribute($attrMatch['name'], $attrMatch['value'], $product);
+                    }
+                }
+            }
         }
+
         $this->totalCount += count($matched);
         echo date('H:i:s') . " Parsing " . count($matched) . " products\n";
     }
@@ -96,6 +103,7 @@ class ParseProducts extends Command
 
     public function handle()
     {
+        ProductsAttribute::query()->delete();
         Product::query()->delete();
         Category::query()->delete();
 
@@ -106,5 +114,12 @@ class ParseProducts extends Command
         echo date('H:i:s') . "Finished parsing categories\n";
         echo "Parsed " . $this->totalCount . " products! :)";
         return 0;
+    }
+
+    private function clearStr(string $str): string
+    {
+        return htmlspecialchars_decode(trim(strip_tags(
+            preg_replace('/<br>|<br\s?\/>/su', "\n", $str)
+        )));
     }
 }

@@ -19,11 +19,11 @@ class ProductController extends BasePageController
     public function product(int $productId)
     {
         $product = $this->productManager->getById($productId);
-        if (empty($product)) {
+        if ($product === null) {
             $this->pageNotFound();
         }
 
-        $category = $this->categoryManager->getById($product->category_id);;
+        $category = $this->categoryManager->getById($product->category_id);
         $breadcrumbs[] = [$category->name, $category->id];
         while ($category->parent !== null) {
             $category = $category->parent;
@@ -35,7 +35,8 @@ class ProductController extends BasePageController
         return $this->viewResponse('pages.product', [
             'currentProduct' => $product,
             'currentProductCategory' => $category->name,
-            'breadcrumb' => $breadcrumbs
+            'breadcrumb' => $breadcrumbs,
+            'attributes' => $this->productManager->getAttributes($product->id)
         ]);
     }
 }

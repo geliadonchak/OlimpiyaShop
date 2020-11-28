@@ -29,40 +29,47 @@
                             </li>
                         @endfor
                     </ul>
-                    <div class="h4"><strong>{{ $currentProduct->price }}</strong><small><strong>₽</strong></small></div>
-                    <p class="pt-1">{{ $currentProduct->description }}</p>
+                    <div class="h4">
+                        <strong>{{ number_format($currentProduct->price, 0, ',', ' ') }}</strong><small><strong>
+                                ₽</strong></small></div>
+                    <p class="pt-1">{{ preg_replace('/&nbsp;/', ' ', $currentProduct->description) }}</p>
                     <div class="table-responsive">
                         <table class="table table-sm table-borderless mb-0">
                             <tbody>
-                            <tr>
-                                <th class="pl-0 w-25" scope="row"><strong>Country</strong></th>
-                                <td>Italy</td>
-                            </tr>
-                            <tr>
-                                <th class="pl-0 w-25" scope="row"><strong>Province</strong></th>
-                                <td>Lazio</td>
-                            </tr>
-                            <tr>
-                                <th class="pl-0 w-25" scope="row"><strong>Type</strong></th>
-                                <td>Abbuoto</td>
-                            </tr>
+                            @foreach($attributes as $attr)
+                                <tr>
+                                    <th class="pl-0 w-25" scope="row"><strong>{{ $attr->name }}</strong></th>
+                                    <td>{{ $attr->value }}</td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
+
                     <hr>
-                    <div class="text-muted"><p class="mb-1">Количество</p></div>
-                    <div class="row mb-2">
-                        <div class="col-5 input-group mb-0">
-                            <button type="button" class="btn btn-outline-danger mr-2"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()"> &#8722;
-                            </button>
-                            <input class="form-control" min="0" value="1" type="number">
-                            <button type="button" class="btn btn-outline-success ml-2"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">&#43;
-                            </button>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-secondary mt-4">В корзину</a>
+
+                    @if(\Illuminate\Support\Facades\Auth::check())
+                        <form method="post" action="{{ route('add-product-to-basket') }}">
+                            <div class="text-muted"><p class="mb-1">Количество</p></div>
+
+                            <div class="row mb-2">
+                                <div class="col-5 input-group mb-0">
+                                    <button type="button" class="btn btn-outline-danger mr-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                        &#8722;
+                                    </button>
+                                    <input class="form-control" name="count" min="1" value="1" type="number">
+                                    <button type="button" class="btn btn-outline-success ml-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">&#43;
+                                    </button>
+                                </div>
+                            </div>
+
+                            @csrf
+                            <input type="hidden" name="productId" value="{{$currentProduct->id}}"/>
+                            <button type="submit" class="btn btn-secondary mt-4">В корзину</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </section>
