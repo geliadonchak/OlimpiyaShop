@@ -9,7 +9,7 @@
                 <div class="col-md-5 mb-4 mb-md-0">
 
                     <div class="view zoom z-depth-2 rounded">
-                        <img class="img-fluid w-100" src="{{ "/storage" . $currentProduct->image }}" alt="">
+                        <img class="img-fluid w-100" style="height: 800px; object-fit: contain" src="{{ "/storage" . $currentProduct->image }}" alt="">
                     </div>
 
                 </div>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Pages\BasketController;
 use App\Http\Controllers\Pages\CatalogController;
 use App\Http\Controllers\Pages\IndexController;
+use App\Http\Controllers\Pages\OrderController;
 use App\Http\Controllers\Pages\ProductController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -37,6 +38,16 @@ Route::post('/basket/add-product', [BasketController::class, 'addProductToBasket
 Route::post('/basket/remove-product', [BasketController::class, 'removeProductFromBasket'])->name('remove-product-from-basket');
 
 Route::post('/basket/remove-all-products', [BasketController::class, 'removeAllProductsFromBasket'])->name('remove-all-products-from-basket');
+
+Route::get('/orders', [OrderController::class, 'getAllOrders'])->name('orders');
+
+Route::post('/orders/add-order', [OrderController::class, 'addBasketToOrder'])->name('add-basket-to-order');
+
+Route::post('/orders/delete-order', [OrderController::class, 'deleteOrder'])->name('delete-order');
+
+Route::post('/orders/clear-orders-history', [OrderController::class, 'clearOrderHistory'])->name('clear-orders-history');
+
+Route::post('/orders/pay-order', [OrderController::class, 'payOrder'])->name('pay-order');
 
 Auth::routes();
 

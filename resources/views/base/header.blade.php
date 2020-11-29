@@ -1,4 +1,4 @@
-<nav class="container-fluid navbar navbar-expand-lg navbar-light bg-light @if(!isset($breadcrumb)) mb-3 @endif">
+<nav class="container-fluid navbar navbar-expand-xl navbar-light bg-light @if(!isset($breadcrumb)) mb-3 @endif">
     <a class="navbar-brand" href="{{ route('home') }}">Olimpiya </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,9 @@
                     <a class="nav-link" href="{{ route('basket') }}">Корзина
                         <span class="badge badge-success badge-pill">{{ $basketCount }}</span>
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('orders') }}">Заказы</a>
                 </li>
             @endif
         </ul>

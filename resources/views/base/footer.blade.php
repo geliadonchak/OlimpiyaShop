@@ -1,4 +1,4 @@
-<footer class="container-fluid page-footer font-small blue-grey lighten-5 no-padding ">
+<footer class="container-fluid page-footer font-small blue-grey lighten-5 no-padding">
     <div class="bg-success">
         <div class="container">
             <div class="row py-4 d-flex align-items-center">

@@ -2,6 +2,14 @@
 
 @section('title', "Корзина")
 
+@section('scripts')
+    <script>
+        $(document).ready(() => {
+            $('a[href="{{route('logout')}}"]').remove();
+        });
+    </script>
+@overwrite
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -11,7 +19,7 @@
                         <h4 class="mb-5">Товаров в корзине: {{ count($basketItems) }}</h4>
 
                         @if(empty($basketItems))
-                            <h5>Коризана пуста :(</h5>
+                            <h5>Корзина пуста :(</h5>
                         @endif
 
 
@@ -114,12 +122,15 @@
                                     <span><strong>{{ number_format($priceSum + $deliveryPrice, 0, ',', ' ') }} ₽</strong></span>
                                 </li>
                             </ul>
-
-                            <button type="button" class="btn btn-success btn-block">Оформить заказ</button>
+                            <form method="post" action="{{ route('add-basket-to-order') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-block">Оформить заказ</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             @endif
         </div>
+    </div>
 @stop
 

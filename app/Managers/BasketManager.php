@@ -63,17 +63,6 @@ class BasketManager implements ManagerInterface
 
     /**
      * @param int $userId
-     */
-    public function clearBasket(int $userId): void
-    {
-        $baskets = $this->getById($userId);
-        foreach ($baskets as $basket) {
-            $basket->delete();
-        }
-    }
-
-    /**
-     * @param int $userId
      * @param int $productId
      * @throws Exception
      */
@@ -88,7 +77,7 @@ class BasketManager implements ManagerInterface
     /**
      * @param int $userId
      */
-    public function removeProductFromUserBasket(int $userId): void
+    public function clearUserBasket(int $userId): void
     {
         $basket = $this->getById($userId);
         if ($basket === null) {

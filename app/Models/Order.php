@@ -11,6 +11,11 @@ class Order extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Model\User');
+        return $this->belongsTo('App\Models\User', 'user', 'id');
+    }
+
+    public function orderItems()
+    {
+        return $this->belongsTo('App\Models\OrderItem', 'order_id', 'id');
     }
 }

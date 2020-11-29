@@ -57,7 +57,7 @@ class BasketController extends BasePageController
     public function removeAllProductsFromBasket() {
        $this->checkAuth();
 
-       $this->basketManager->removeProductFromUserBasket(Auth::id());
+       $this->basketManager->clearUserBasket(Auth::id());
 
        return redirect()->back();
     }

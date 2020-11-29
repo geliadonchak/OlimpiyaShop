@@ -17,8 +17,8 @@ class Orders extends Migration
             $table->timestamps();
             $table->bigIncrements('id');
             $table->foreignId('user')->references('id')->on('users');
-            $table->dateTime('date')->default(now());
             $table->boolean('is_deleted')->default(false);
+            $table->addColumn('integer', 'price')->default(0);
         });
     }
 
